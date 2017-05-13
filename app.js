@@ -8,6 +8,7 @@ var session =require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var login = require('./routes/login');
 
 var app = express();
 
@@ -23,7 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
 
 // セッションの利用
 app.use(session({
