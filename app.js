@@ -24,6 +24,32 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+
+// セッションの利用
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 30 * 60 * 1000 //30min
+  }
+}));
+
+// セッションチェック処理
+var sessionCheck = function(req, res, next) {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+};
+
+
+// app.use(cookieParser('secret','mycom_sercred_key'));
+// app.use(session({key:'session_id'}));
+
+app.use('/login', login);
+app.use('/', sessionCheck,index);  // sessionCheckを前処理に追加
 app.use('/users', users);
 
 
