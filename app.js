@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //ログ出力
 var logDirectory = __dirname + '/logs'
     // ディレクトリがなければ作成する
-    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+    //一時コメントアウト    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
     // write streamをローテーションする設定
     var accessLogStream = FileStreamRotator.getStream({
       filename: logDirectory + '/access-%DATE%.log',
@@ -58,7 +58,8 @@ var logDirectory = __dirname + '/logs'
       return mydate;
     });
 
-    app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+   // 出力する
+   //   app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
 
 // セッションの利用
     app.use(session({
