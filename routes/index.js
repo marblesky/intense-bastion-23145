@@ -9,4 +9,15 @@ router.get('/', function(req, res, next) {
  });
 });
 
+router.post('/', function(req, res, next) {
+var str = req.body['text1'];
+    res.render('index',
+        {
+            title: 'Express',
+            msg: "こんにちは、" + str + "さん！",
+            input: str
+        }
+    );
+});
+
 module.exports = router;
