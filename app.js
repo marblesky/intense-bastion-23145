@@ -1,10 +1,13 @@
 var express = require('express');
 var path = require('path');
+var fs = require('fs');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session =require('express-session');
+var FileStreamRotator = require('file-stream-rotator');
+require('date-utils'); //日付系
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -12,12 +15,19 @@ var login = require('./routes/login');
 
 var app = express();
 
+//if ('development' == app.get('env')) {
+//   app.use(logger('dev'));
+//}
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//ミドルウエア app.use
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,24 +35,49 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// セッションの利用
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 30 * 60 * 1000 //30min
-  }
-}));
+//ログ出力
+var logDirectory = __dirname + '/logs'
+    // ディレクトリがなければ作成する
+    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+    // write streamをローテーションする設定
+    var accessLogStream = FileStreamRotator.getStream({
+      filename: logDirectory + '/access-%DATE%.log',
+      frequency: 'daily',
+      verbose: false,
+      date_format: "YYYY-MM-DD"
+    });
+    // 今回はcombinedで出力
+    //:remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"
+    //app.use(morgan(':id :method :url :response-time'))
+    //app.use(logger(':remote-addr :remote-user :date[iso] :method :url :http-version :statu :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
 
-// セッションチェック処理
-var sessionCheck = function(req, res, next) {
-  if (req.session.user) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-};
+    var dt = new Date();
+    var mydate = dt.toFormat("YYYY/MM/DD HH24:MI:SS");
+
+    logger.token('mydate', function(req, res) {
+      return mydate;
+    });
+
+    app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+
+// セッションの利用
+    app.use(session({
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 30 * 60 * 1000 //30min
+      }
+    }));
+
+    // セッションチェック処理
+    var sessionCheck = function(req, res, next) {
+      if (req.session.user) {
+        next();
+      } else {
+        res.redirect('/login');
+      }
+    };
 
 
 // app.use(cookieParser('secret','mycom_sercred_key'));
@@ -70,5 +105,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;
