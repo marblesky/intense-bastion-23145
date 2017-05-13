@@ -15,11 +15,9 @@ var login = require('./routes/login');
 
 var app = express();
 
-//if ('development' == app.get('env')) {
+//if ('dev' == app.get('env')) {
 //   app.use(logger('dev'));
 //}
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,7 +26,7 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //ミドルウエア app.use
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -38,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //ログ出力
 var logDirectory = __dirname + '/logs'
     // ディレクトリがなければ作成する
-    //一時コメントアウト    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
     // write streamをローテーションする設定
     var accessLogStream = FileStreamRotator.getStream({
       filename: logDirectory + '/access-%DATE%.log',
@@ -58,8 +56,16 @@ var logDirectory = __dirname + '/logs'
       return mydate;
     });
 
-   // 出力する
-   //   app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+   // 出力する(dev環境・stg環境・prd環境は出力する。hrk環境は出力しない)
+    if ('dev' == app.get('env')) {
+      app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+    } else if ('stg' == app.get('stg')) {
+      app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+    } else if ('prd' == app.get('prd')) {
+       app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+    } else {
+
+    }
 
 // セッションの利用
     app.use(session({
