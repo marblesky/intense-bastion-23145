@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session =require('express-session');
 var FileStreamRotator = require('file-stream-rotator');
+var mysql = require('mysql2');
 require('date-utils'); //日付系
 
 var index = require('./routes/index');
@@ -30,7 +31,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 
 //ログ出力
@@ -58,11 +59,11 @@ var logDirectory = __dirname + '/logs'
 
    // 出力する(dev環境・stg環境・prd環境は出力する。hrk環境は出力しない)
     if ('dev' == app.get('env')) {
-      app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+        app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
     } else if ('stg' == app.get('stg')) {
-      app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+        app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
     } else if ('prd' == app.get('prd')) {
-       app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+        app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
     } else {
 
     }
@@ -85,6 +86,7 @@ var logDirectory = __dirname + '/logs'
         res.redirect('/login');
       }
     };
+
 
 
 // app.use(cookieParser('secret','mycom_sercred_key'));

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var connection=require("../lib/mysqlConnection.js");
 
 router.get('/', function(req, res, next) {
   res.render('login');
@@ -13,6 +14,14 @@ router.post('/', function(req, res, next) {
     // セッションへの格納処理
     // ここでは入力されたユーザ名だけだが、処理要件に応じて
     // DBから取得した値など（ユーザごとの設定値とか）を格納する
+
+
+      req.session.user = {name: req.body.userName};
+      var query = 'SELECT * FROM `212`.mailtbl';
+      connection.query(query, function(err, rows) {
+        console.log(rows[0].name);
+      });
+    //いままでのもの
     req.session.user = {name: req.body.userName};
     res.redirect('../');
   } else {
@@ -20,6 +29,5 @@ router.post('/', function(req, res, next) {
     res.render('login', {error: err});
   }
 });
-
 
 module.exports = router;

@@ -16,6 +16,8 @@
     "file-stream-rotator": "^0.1.0",
     "log4js": "^1.1.1",
     "morgan": "~1.8.1",
+    "mysql": "^2.13.0",
+    "mysql2": "^1.2.0",
     "path": "^0.12.7",
     "serve-favicon": "~2.4.2"
   }
