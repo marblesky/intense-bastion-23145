@@ -13,6 +13,7 @@ require('date-utils'); //日付系
 var index = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
+var rosen = require('./routes/rosen');
 
 var app = express();
 
@@ -95,6 +96,7 @@ var logDirectory = __dirname + '/logs'
 app.use('/login', login);
 app.use('/', sessionCheck,index);  // sessionCheckを前処理に追加
 app.use('/users', users);
+app.use('/rosen', rosen);
 
 
 // catch 404 and forward to error handler

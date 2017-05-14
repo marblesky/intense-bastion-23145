@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %> へ</p>
+
+
+ <table border="1">
+        <% boardList.forEach(function(boardItem) { %>
+            <tr>
+                <td><%= boardItem.沿線駅コード %></td>
+                <td><%= boardItem.都道府県コード %></td>
+                <td><%= boardItem.検沿線駅コード %></td>
+                <td><%= boardItem.沿線コード %></td>
+                <td><a href="https://ja.wikipedia.org/wiki/<%= boardItem.沿線名 %>"><%= boardItem.沿線名 %></a></td>
+                <td><a href="https://ja.wikipedia.org/wiki/<%= boardItem.駅名 %>駅"><%= boardItem.駅名 %></a></td>
+            </tr>
+        <% }); %>
+    </ul>
+</table>
+
+    <p><a href="/">戻る</a></p>
+  </body>
+</html>
