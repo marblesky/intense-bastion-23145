@@ -17,7 +17,7 @@ router.post('/', function(req, res, next) {
 
 
       req.session.user = {name: req.body.userName};
-      var query = 'SELECT * FROM `212`.mailtbl';
+      var query = 'SELECT * FROM mailtbl';
       connection.query(query, function(err, rows) {
         console.log(rows[0].name);
       });
