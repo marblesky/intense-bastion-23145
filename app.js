@@ -7,7 +7,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session =require('express-session');
 var FileStreamRotator = require('file-stream-rotator');
-var mysql = require('mysql2');
 require('date-utils'); //日付系
 
 var index = require('./routes/index');
