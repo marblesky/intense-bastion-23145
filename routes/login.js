@@ -31,9 +31,12 @@ router.post('/', function(req, res, next) {
 		}
 		   var query = vsql;
 		   connection.query(query, function(err, rows) {
+         res.render('rosen', {
+           NameList: rows
+         });
 		//         if (rows[0].name=={name: req.body.userName}) {
 		            req.session.user = {name: req.body.userName};
-		            res.redirect('../');
+		           // res.redirect('../');
 		  //       }else{
 		  //           var err = '入力が正しくありません。確認して再入力してください。';
 		  //           res.render('login', {error: err});
