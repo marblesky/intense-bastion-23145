@@ -29,8 +29,8 @@ router.post('/', function(req, res, next) {
 		      var vsql= 'select * from jinji.社員マスタ where 社員コード=\'aaaa\'';
 		break;
 		}
-		//   var query = vsql;
-		//   connection.query(query, function(err, rows) {
+		   var query = vsql;
+		   connection.query(query, function(err, rows) {
 		//         if (rows[0].name=={name: req.body.userName}) {
 		            req.session.user = {name: req.body.userName};
 		            res.redirect('../');
@@ -38,7 +38,7 @@ router.post('/', function(req, res, next) {
 		  //           var err = '入力が正しくありません。確認して再入力してください。';
 		  //           res.render('login', {error: err});
 		  //       }
-		  //  });
+		    });
     //いままでのもの
     //req.session.user = {name: req.body.userName};
     //res.redirect('../');
