@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
   res.render('login');
 });
 
-router.post('/', function(req, res, next) {
+router.post('login', function(req, res, next) {
   // ここではユーザ名の有無判断のみ行っている
   // パスワード認証の場合はユーザ名、パスワードの有無判断に加えて
   // データストア(DBなど)内の存在チェックを合わせて行う
