@@ -16,19 +16,19 @@ router.post('/', function(req, res, next) {
     // ここでは入力されたユーザ名だけだが、処理要件に応じて
     // DBから取得した値など（ユーザごとの設定値とか）を格納する
 
-		// switch (app.get('env')) {
-		// case 'dev':
-		// case 'stg':
-		// case 'prd':
-		//       var vsql= 'select * from jinji.社員マスタ where 社員コード=\'aaaa\'';
-		// break;
-		// case 'hrk':
-		//       var vsql= 'SELECT * FROM mailtbl where name=\''+{name: req.body.userName}+'\'';
-		// break;
-		// default:
-		//       var vsql= 'select * from jinji.社員マスタ where 社員コード=\'aaaa\'';
-		// break;
-		// }
+		switch (app.get('env')) {
+		case 'dev':
+		case 'stg':
+		case 'prd':
+		      var vsql= 'select * from jinji.社員マスタ where 社員コード=\'aaaa\'';
+		break;
+		case 'hrk':
+		      var vsql= 'SELECT * FROM mailtbl where name=\''+{name: req.body.userName}+'\'';
+		break;
+		default:
+		      var vsql= 'select * from jinji.社員マスタ where 社員コード=\'aaaa\'';
+		break;
+		}
 		//   var query = vsql;
 		//   connection.query(query, function(err, rows) {
 		//         if (rows[0].name=={name: req.body.userName}) {
