@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
 		}
 		   var query = vsql;
 		   connection.query(query, function(err, rows) {
-         res.render('rosen', {
+         res.render('login', {
            NameList: rows
          });
 		//         if (rows[0].name=={name: req.body.userName}) {
