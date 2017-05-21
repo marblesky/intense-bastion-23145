@@ -3,48 +3,61 @@ var router = express.Router();
 var connection=require("../lib/mysqlConnection.js");
 var app = express();
 
+switch (app.get('env')) {
+case 'dev':
+case 'stg':
+case 'prd':
+      var viewmode='1'; //社内用モード
+      var vtxttitle='担当者コード'; //社内用モード
+break;
+case 'hrk':
+      var viewmode='2'; //heroku用モード
+      var vtxttitle='名前'; //社内用モード
+
+break;
+default:
+      var viewmode='1'; //社内用モード
+      var vtxttitle='担当者コード'; //社内用モード
+break;
+}
+
 router.get('/', function(req, res, next) {
-  res.render('login');
+  res.render('login',{
+                        title: 'Express',
+                        txttitle: "担当者コード",
+                        msg: "担当者コードを入力してください"
+                      });
 });
 
-router.post('/login', function(req, res, next) {
-  // ここではユーザ名の有無判断のみ行っている
-  // パスワード認証の場合はユーザ名、パスワードの有無判断に加えて
-  // データストア(DBなど)内の存在チェックを合わせて行う
+// --
+router.post('/', function(req, res, next) {
   if(req.body.userName) {
-    // セッションへの格納処理
-    // ここでは入力されたユーザ名だけだが、処理要件に応じて
-    // DBから取得した値など（ユーザごとの設定値とか）を格納する
+        if(viewmode=='1'){
+          var query = 'select * from jinji.社員マスタ where 社員コード=\''+req.body.userName+'\'';
+        }else{
+          var query = 'SELECT * FROM mailtbl where name=\''+ req.body.userName +'\'';
+        }
 
-		switch (app.get('env')) {
-		case 'dev':
-		case 'stg':
-		case 'prd':
-		      var vsql= 'select * from jinji.社員マスタ where 社員コード=\'aaaa\'';
-		break;
-		case 'hrk':
-		      var vsql= 'SELECT * FROM mailtbl where name=\''+{name: req.body.userName}+'\'';
-		break;
-		default:
-		      var vsql= 'select * from jinji.社員マスタ where 社員コード=\'aaaa\'';
-		break;
-		}
-		   var query = vsql;
-		   connection.query(query, function(err, rows) {
-         res.render('login', {
-           NameList: rows
-         });
-		//         if (rows[0].name=={name: req.body.userName}) {
-		            req.session.user = {name: req.body.userName};
-		           // res.redirect('../');
-		  //       }else{
-		  //           var err = '入力が正しくありません。確認して再入力してください。';
-		  //           res.render('login', {error: err});
-		  //       }
-		    });
-    //いままでのもの
-    //req.session.user = {name: req.body.userName};
-    //res.redirect('../');
+        connection.query(query, function(err, rows) {
+            console.log(query);
+              if(viewmode==='1' && rows[0].社員コード === req.body.userName){
+                req.session.user = {name: rows[0].社員名称};
+                console.log(rows[0].社員名称);
+                res.redirect('../');
+              }else if(viewmode==='2'){
+                req.session.user = {name: req.body.userName};
+                //console.log(viewmode);
+                res.redirect('../');
+              } else {
+                var err = '入力が正しくありません。確認して再入力してください。';
+                //console.log(viewmode);
+                res.render('login', {error: err});
+
+              }
+        });
+//--
+          // req.session.user = {name: req.body.userName};
+          // res.redirect('../');
   } else {
     var err = '入力が正しくありません。確認して再入力してください。';
     res.render('login', {error: err});

@@ -6,8 +6,10 @@
   </head>
   <body>
     <h1>ログイン</h1>
-    <p>Welcome to logins</p>
+    <p>Welcome to <%= title %></p>
+    <p><%= msg %></p>
     <form method='post' action='/login'>
+      <%=txttitle%>
       <input type="userName" name="userName" placeholder="username">
       <!-- パスワード認証する場合は適宜入力欄を追加 -->
       <!-- <input type="password" name="password" placeholder="password"> -->
