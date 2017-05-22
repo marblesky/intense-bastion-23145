@@ -46,6 +46,7 @@ router.post('/', function(req, res, next) {
                 res.redirect('../');
               }else if(viewmode==='2'){
                 req.session.user = {name: req.body.userName};
+                console.log(viewmode);
                 //console.log(viewmode);
                 res.redirect('../');
               } else {
