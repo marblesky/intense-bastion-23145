@@ -74,7 +74,7 @@ var logDirectory = __dirname + '/logs'
       resave: false,
       saveUninitialized: false,
       cookie: {
-        maxAge: 30 * 60 * 1000 //30min
+        maxAge: 60 * 60 * 1000 //30min
       }
     }));
 
