@@ -8,7 +8,6 @@ router.get('/', function(req, res, next) {
           title: 'Express',
           msg: "こんにちは、" + UserName.name + "さん！"
         });
-  }
 });
 
 module.exports = router;
