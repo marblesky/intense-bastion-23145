@@ -57,12 +57,14 @@ var logDirectory = __dirname + '/logs'
       return mydate;
     });
 
+    //app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
+
    // 出力する(dev環境・stg環境・prd環境は出力する。hrk環境は出力しない)
     if ('dev' === app.get('env')) {
         app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
-    } else if ('stg' === app.get('stg')) {
+    } else if ('stg' === app.get('env')) {
         app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
-    } else if ('prd' === app.get('prd')) {
+    } else if ('prd' === app.get('env')) {
         app.use(logger(':remote-addr :remote-user :mydate :method :url :http-version :status :res[content-length] :referrer :user-agent', {stream: accessLogStream}));
     } else {
 
