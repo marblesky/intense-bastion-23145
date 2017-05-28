@@ -71,6 +71,7 @@ var logDirectory = __dirname + '/logs'
 
     }
 
+
 // セッションの利用
     app.use(session({
       secret: 'keyboard cat',

@@ -13,12 +13,12 @@
  <table border="1">
         <% boardList.forEach(function(boardItem) { %>
             <tr>
-                <td><%= boardItem.ENSENEKI_CD %></td>
-                <td><%= boardItem.KEN_CD %></td>
-                <td><%= boardItem.KEN_ENSENEKI_CD %></td>
-                <td><%= boardItem.ENSEN_CD %></td>
-                <td><a href="https://ja.wikipedia.org/wiki/<%= boardItem.ENSEN_NM %>"><%= boardItem.ENSEN_NM %></a></td>
-                <td><a href="https://ja.wikipedia.org/wiki/<%= boardItem.EKI_NM %>駅"><%= boardItem.EKI_NM %></a></td>
+                <td><%= boardItem.沿線駅コード %></td>
+                <td><%= boardItem.都道府県コード %></td>
+                <td><%= boardItem.検沿線駅コード %></td>
+                <td><%= boardItem.沿線コード %></td>
+                <td><a href="https://ja.wikipedia.org/wiki/<%= boardItem.沿線名 %>"><%= boardItem.沿線名 %></a></td>
+                <td><a href="https://ja.wikipedia.org/wiki/<%= boardItem.駅名 %>駅"><%= boardItem.駅名 %></a></td>
             </tr>
         <% }); %>
     </ul>
